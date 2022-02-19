@@ -90,7 +90,20 @@ async function main(language: LanguageId) {
     monaco,
   );
 
-  const value = getSampleCodeForLanguage(language);
+  const value = `[b]Welcome to the SPXX Blackboard Alpha![/b] We have generated a room for you. Please type something in the editor
+and it will show up for everyone who got the same url. You can also explore the advanced features just by typing [code].[/code] and the
+name of the command. May be try [code].start[/code]?
+
+Note that if everyone in the room leaves it, you will only be able to see the latest version of the file that you have
+recieved and any newer changes will be completely ignored & users whojoins the room afterwards will see a blank room.
+Therefore, it is recommended to keep the room open for as long as you need it and only close it when you are done.
+
+The room is designed to be able to see other user's cursor positions and selections. However, this feature is a bit buggy
+and fails a lot. If you experience any other issues, please open an issue on our GitHub page.
+
+You can always start a new session at [url]https://b.wuguangyaostore.com/[/url]. This is an open source project lincensed under MIT and
+you can visit our GitHub page at [url]https://github.com/SPXFellow/blackboard[/url].
+`
   const id = 'container';
   const element = document.getElementById(id);
   if (element == null) {
@@ -315,7 +328,28 @@ $2
   });
 
   const ydoc = new Y.Doc();
-  const yprovider = new WebrtcProvider('monaco', ydoc, {
+
+  let roomName: string;
+
+  if (location.hash.length < 1) {
+    const cyrb53 = function(str: string, seed = 0) {
+      let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+      for (let i = 0, ch; i < str.length; i++) {
+          ch = str.charCodeAt(i);
+          h1 = Math.imul(h1 ^ ch, 2654435761);
+          h2 = Math.imul(h2 ^ ch, 1597334677);
+      }
+
+      h1 = Math.imul(h1 ^ (h1>>>16), 2246822507) ^ Math.imul(h2 ^ (h2>>>13), 3266489909);
+      h2 = Math.imul(h2 ^ (h2>>>16), 2246822507) ^ Math.imul(h1 ^ (h1>>>13), 3266489909);
+      return 4294967296 * (2097151 & h2) + (h1>>>0);
+    };
+    const hash = cyrb53(crypto.getRandomValues(new Uint32Array(5)).toString()).toString(36);
+    location.hash = hash;
+  }
+  roomName = 'spxx-' + location.hash
+  document.addEventListener('hashchange', () => location.reload())
+  const yprovider = new WebrtcProvider(roomName, ydoc, {
     signaling: [
       'ws://bb.guangyaostore.com',
       'wss://signaling.yjs.dev',
@@ -331,7 +365,6 @@ $2
   const type = ydoc.getText('monaco');
 
   const editor = monaco.editor.create(element, {
-    value,
     language,
     theme: 'vs-dark',
     minimap: {
@@ -346,6 +379,9 @@ $2
     new Set([editor]),
     yprovider.awareness,
   );
+
+
+  editor!.setValue(value);
 }
 
 // Taken from https://github.com/microsoft/vscode/blob/829230a5a83768a3494ebbc61144e7cde9105c73/src/vs/workbench/services/textMate/browser/textMateService.ts#L33-L40
@@ -360,19 +396,4 @@ async function loadVSCodeOnigurumWASM(): Promise<Response | ArrayBuffer> {
   // Otherwise, a TypeError is thrown when using the streaming compiler.
   // We therefore use the non-streaming compiler :(.
   return await response.arrayBuffer();
-}
-
-function getSampleCodeForLanguage(language: LanguageId): string {
-  if (language === 'bbcode') {
-    return `\
-import foo
-
-async def bar(): string:
-  f = await foo()
-  f_string = f"Hooray {f}! format strings are not supported in current Monarch grammar"
-  return foo_string
-`;
-  }
-
-  throw Error(`unsupported language: ${language}`);
 }

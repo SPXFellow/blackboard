@@ -1,4 +1,10 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
 #container {
-  height: 1000px;
-  width: 800px;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
 }
