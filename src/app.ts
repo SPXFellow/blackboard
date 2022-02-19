@@ -351,7 +351,7 @@ $2
   document.addEventListener('hashchange', () => location.reload())
   const yprovider = new WebrtcProvider(roomName, ydoc, {
     signaling: [
-      'ws://bb.guangyaostore.com',
+      //'ws://bb.guangyaostore.com',
       'wss://signaling.yjs.dev',
       'wss://y-webrtc-signaling-eu.herokuapp.com',
       'wss://y-webrtc-signaling-us.herokuapp.com',
