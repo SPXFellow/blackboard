@@ -18,4 +18,14 @@ export default defineConfig({
     },
     extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'monaco': ['monaco-editor'],
+
+        }
+      }
+    }
+  }
 });
