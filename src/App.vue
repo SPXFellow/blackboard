@@ -43,12 +43,13 @@
         </p>
       </n-card>
     </n-modal>
-    <div id="container"></div>
+    <blackboard-editor />
   </n-config-provider>
 </template>
 <script setup lang="ts">
 import {NConfigProvider, NModal, NCard, NA, darkTheme, zhCN, dateZhCN} from 'naive-ui'
 import SiteHeader from './components/SiteHeader.vue'
+import BlackboardEditor from './components/BlackboardEditor.vue'
 
 let showModal = $ref(true)
 </script>
