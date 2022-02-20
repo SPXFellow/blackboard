@@ -1,5 +1,5 @@
 module.exports = {
-  ignorePatterns: ['out/**/*.js', '.yarn/**/*.js'],
+  ignorePatterns: ['dist/**/*.js', '.yarn/**/*.js'],
   env: {
     browser: true,
     es6: true,
@@ -23,4 +23,4 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
   ],
-};
+}

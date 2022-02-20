@@ -1,4 +1,4 @@
-import type * as monaco from 'monaco-editor';
+import type * as monaco from 'monaco-editor'
 
 /**
  * Fields that, if present in a LanguageConfiguration, must be a RegExp object
@@ -17,7 +17,7 @@ const REGEXP_PROPERTIES = [
 
   // language's "word definition"
   'wordPattern',
-];
+]
 
 /**
  * Configuration data is read from JSON and JSONC files, which cannot contain
@@ -30,37 +30,37 @@ const REGEXP_PROPERTIES = [
  * to be specified to the RegExp constructor.
  */
 export function rehydrateRegexps(rawConfiguration: string): monaco.languages.LanguageConfiguration {
-  const out = JSON.parse(rawConfiguration);
+  const out = JSON.parse(rawConfiguration)
   for (const property of REGEXP_PROPERTIES) {
-    const value = getProp(out, property);
+    const value = getProp(out, property)
     if (typeof value === 'string') {
-      setProp(out, property, new RegExp(value));
+      setProp(out, property, new RegExp(value))
     }
   }
-  return out;
+  return out
 }
 
 function getProp(obj: {string: any}, selector: string): any {
-  const components = selector.split('.');
+  const components = selector.split('.')
   // @ts-ignore
-  return components.reduce((acc, cur) => (acc != null ? acc[cur] : null), obj);
+  return components.reduce((acc, cur) => (acc != null ? acc[cur] : null), obj)
 }
 
 function setProp(obj: {string: any}, selector: string, value: RegExp): void {
-  const components = selector.split('.');
-  const indexToSet = components.length - 1;
+  const components = selector.split('.')
+  const indexToSet = components.length - 1
   components.reduce((acc, cur, index) => {
     if (acc == null) {
-      return acc;
+      return acc
     }
 
     if (index === indexToSet) {
       // @ts-ignore
-      acc[cur] = value;
-      return null;
+      acc[cur] = value
+      return null
     } else {
       // @ts-ignore
-      return acc[cur];
+      return acc[cur]
     }
-  }, obj);
+  }, obj)
 }

@@ -1,5 +1,5 @@
-import {rehydrateRegexps} from './configuration';
-import {SimpleLanguageInfoProvider} from './providers';
-import {registerLanguages} from './register';
+import './app'
+import {createApp} from 'vue'
+import App from './App.vue'
 
-export {SimpleLanguageInfoProvider, registerLanguages, rehydrateRegexps};
+createApp(App).mount('#app')
