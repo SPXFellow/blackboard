@@ -75,7 +75,7 @@ body {
 }
 
 #container {
-  height: 100vh;
+  height: calc(100vh - 48px);
   width: 100%;
   overflow: hidden;
 }
