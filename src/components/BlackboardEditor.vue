@@ -18,13 +18,14 @@ import {IndexeddbPersistence} from 'y-indexeddb'
 import {MonacoBinding} from 'y-monaco'
 import getSnippets from '../utils/getSnippets'
 
+defineProps(['modelValue'])
+const emit = defineEmits(['update:modelValue'])
+
 interface DemoScopeNameInfo extends ScopeNameInfo {
   path: string
 }
 
-main('bbcode')
-
-async function main(language: LanguageId) {
+const main = async (language: LanguageId): Promise<void> => {
   // In this demo, the following values are hardcoded to support Python using
   // the VS Code Dark+ theme. Currently, end users are responsible for
   // extracting the data from the relevant VS Code extensions themselves to
@@ -141,7 +142,7 @@ async function main(language: LanguageId) {
   roomName = 'spxx-' + location.hash
   document.addEventListener('hashchange', () => location.reload())
 
-  const indexeddbProvider = new IndexeddbPersistence('count-demo', ydoc)
+  const indexeddbProvider = new IndexeddbPersistence(roomName, ydoc)
   indexeddbProvider.whenSynced.then(() => {
     console.log('loaded data from indexed db')
   })
@@ -166,8 +167,11 @@ async function main(language: LanguageId) {
     minimap: {
       enabled: true,
     },
+    automaticLayout: true
   })
   provider.injectCSS()
+
+  const editorModel = editor.getModel()!
 
   const monacoBinding = new MonacoBinding(
     type,
@@ -175,6 +179,11 @@ async function main(language: LanguageId) {
     new Set([editor]),
     yprovider.awareness,
   )
+
+  editorModel.onDidChangeContent((e) => {
+    emit('update:modelValue', editorModel.getValue())
+  })
+
 }
 
 // Taken from https://github.com/microsoft/vscode/blob/829230a5a83768a3494ebbc61144e7cde9105c73/src/vs/workbench/services/textMate/browser/textMateService.ts#L33-L40
@@ -193,4 +202,5 @@ async function loadVSCodeOnigurumWASM(): Promise<Response | ArrayBuffer> {
   return await response.arrayBuffer()
 }
 
+main('bbcode')
 </script>

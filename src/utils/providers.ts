@@ -4,12 +4,12 @@ import type {IGrammar, IRawGrammar, IRawTheme, IOnigLib, StackElement} from 'vsc
 import type {LanguageId, LanguageInfo} from './register'
 
 import {INITIAL, Registry, parseRawGrammar} from 'vscode-textmate'
-// @ts-ignore
-import {generateTokensCSSForColorMap} from 'monaco-editor/esm/vs/editor/common/modes/supports/tokenization.js'
-// @ts-ignore
-import {TokenizationRegistry} from 'monaco-editor/esm/vs/editor/common/modes.js'
-// @ts-ignore
-import {Color} from 'monaco-editor/esm/vs/base/common/color.js'
+// @ts-expect-error
+import {generateTokensCSSForColorMap} from 'monaco-editor/esm/vs/editor/common/languages/supports/tokenization'
+// @ts-expect-error
+import {TokenizationRegistry} from 'monaco-editor/esm/vs/editor/common/languages'
+// @ts-expect-error
+import {Color} from 'monaco-editor/esm/vs/base/common/color'
 
 /** String identifier for a "scope name" such as 'source.cpp' or 'source.java'. */
 export type ScopeName = string

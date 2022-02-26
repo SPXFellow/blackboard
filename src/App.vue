@@ -1,5 +1,6 @@
 <template>
   <n-config-provider :theme="darkTheme" :locale="zhCN" :date-locale="dateZhCN">
+    <n-global-style />
     <site-header />
     <n-modal v-model:show="showModal">
       <n-card
@@ -22,7 +23,7 @@
         <p>
           Note that if everyone in the room leaves it, you will only be able to see the latest
           version of the file that you have recieved and any newer changes will be completely
-          ignored & users whojoins the room afterwards will see a blank room. Therefore, it is
+          ignored & users who joins the room afterwards will see a blank room. Therefore, it is
           recommended to keep the room open for as long as you need it and only close it when you
           are done.
         </p>
@@ -43,13 +44,22 @@
         </p>
       </n-card>
     </n-modal>
-    <blackboard-editor />
+    <n-grid :x-gap="12" :y-gap="8">
+      <n-gi span="16">
+        <blackboard-editor v-model="editorValue" />
+      </n-gi>
+      <n-gi span="8">
+        <bbcode-preview v-model="editorValue" />
+      </n-gi>
+    </n-grid>
   </n-config-provider>
 </template>
 <script setup lang="ts">
-import {NConfigProvider, NModal, NCard, NA, darkTheme, zhCN, dateZhCN} from 'naive-ui'
+import {NConfigProvider, NGlobalStyle, NModal, NCard, NGi, NGrid, NA, darkTheme, zhCN, dateZhCN} from 'naive-ui'
 import SiteHeader from './components/SiteHeader.vue'
 import BlackboardEditor from './components/BlackboardEditor.vue'
+import BbcodePreview from './components/BbcodePreview.vue'
 
 let showModal = $ref(true)
+let editorValue = $ref('')
 </script>
