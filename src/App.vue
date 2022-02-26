@@ -44,22 +44,53 @@
         </p>
       </n-card>
     </n-modal>
-    <n-grid :x-gap="12" :y-gap="8">
-      <n-gi span="16">
+    <splitpanes class="default-theme">
+      <pane min-size="25">
         <blackboard-editor v-model="editorValue" />
-      </n-gi>
-      <n-gi span="8">
+      </pane>
+      <pane min-size="25">
         <bbcode-preview v-model="editorValue" />
-      </n-gi>
-    </n-grid>
+      </pane>
+    </splitpanes>
   </n-config-provider>
 </template>
 <script setup lang="ts">
-import {NConfigProvider, NGlobalStyle, NModal, NCard, NGi, NGrid, NA, darkTheme, zhCN, dateZhCN} from 'naive-ui'
+import {NConfigProvider, NGlobalStyle, NModal, NCard, NA, darkTheme, zhCN, dateZhCN} from 'naive-ui'
+import { Splitpanes, Pane } from 'splitpanes'
+import 'splitpanes/dist/splitpanes.css'
 import SiteHeader from './components/SiteHeader.vue'
 import BlackboardEditor from './components/BlackboardEditor.vue'
 import BbcodePreview from './components/BbcodePreview.vue'
+import { onMounted } from 'vue'
 
 let showModal = $ref(true)
 let editorValue = $ref('')
+
+
 </script>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#container {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.splitpanes.default-theme .splitpanes__pane,
+.splitpanes.default-theme .splitpanes__splitter {
+  background-color: unset;
+}
+
+.splitpanes.default-theme .splitpanes__splitter:before, .splitpanes.default-theme .splitpanes__splitter:after {
+  background-color: #ffffff70;
+}
+
+.default-theme.splitpanes--vertical>.splitpanes__splitter, .default-theme .splitpanes--vertical>.splitpanes__splitter {
+  width: 10px;
+  border-left: 1px solid #ffffff70;
+}
+</style>
